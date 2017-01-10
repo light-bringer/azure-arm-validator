@@ -1,8 +1,8 @@
 {
   "comment": "You can either set these values as environment variables or to a file called '.config.json' at the root of the repo",
-  "AZURE_CLIENT_ID": "00000000-0000-0000-0000-000000000000",
+  "AZURE_CLIENT_ID": "2c54b4e2-9b6b-49bd-b2d6-00c3b1e26339",
   "AZURE_TENANT_ID": "4426dea4-353b-4e1e-a558-78df736a1498",
-  "AZURE_CLIENT_SECRET": "00000000-0000-0000-0000-000000000000",
+  "AZURE_CLIENT_SECRET": "6lBbRjJMqSP/dGPUAuMDQZW3y4jACeYPcVlfz8a1xMs=",
   "AZURE_REGION": "westus",
   "TEST_RESOURCE_GROUP_NAME": "azure_test_rg",
   "RESOURCE_GROUP_NAME_PREFIX": "qstci-",

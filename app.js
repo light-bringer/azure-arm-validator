@@ -46,6 +46,7 @@ if (app.get('env') === 'development') {
 // production error handler
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
+  console.log(err)
   res.status(err.status || 500);
   res.render('error', {
     message: err.message,
@@ -56,16 +57,23 @@ app.use(function(err, req, res, next) {
 // init
 azureTools.login()
 .then(function () {
+  console.log("Succesfully logged into Azure subscription")
   debug('Sucessfully logged into azure subscription');
   // clear any existing groups that may have been left 
   // behind possilby due to a restart
   return azureTools.deleteExistingGroups();
 })
 .catch(function (err) {
+
+  console.log("Failed to Initialize Properly")
   debug('Failed to Initialize Properly');
+  console.log("This can be either to unable to login or a problem with")
   debug('This can be either to unable to login or a problem with');
+  console.log('matching resource groups to those stored in the database:')
   debug('matching resource groups to those stored in the database:');
   debug(err);
+  console.log(err)
+  console.log(debug)
 });
 
 module.exports = app;
