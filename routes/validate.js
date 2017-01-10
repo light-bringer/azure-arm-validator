@@ -10,10 +10,12 @@ var express = require('express'),
   githubHelper = require('../modules/github_helper'),
   DelayedResponse = require('http-delayed-response');
 
+
 var debug = require('debug')('arm-validator:server');
 var parallelDeployLimit = parseInt(conf.get('PARALLEL_DEPLOY_LIMIT') || 20);
 debug('parallelDeployLimit: ' + parallelDeployLimit);
 var parallelDeploys = 0;
+
 
 function writeFileHelper(fs, fileName, parametersFileName, template, parameters) {
   var writeFile = RSVP.denodeify(fs.writeFile);
@@ -22,6 +24,7 @@ function writeFileHelper(fs, fileName, parametersFileName, template, parameters)
       return writeFile.call(fs, parametersFileName, JSON.stringify(parameters, null, '\t'));
     });
 }
+
 
 // replaces https://raw.githubusercontent.com links to upstream:master to the downstream repo
 function replaceRawLinksForPR(template, prNumber) {
@@ -37,10 +40,18 @@ function replaceRawLinksForPR(template, prNumber) {
     });
 }
 
+
 // replaces
 function replaceSpecialParameterPlaceholders(req) {
   req.body.parameters = paramHelper.replaceKeyParameters(req.body.parameters);
 }
+
+router.get('/', function (req, res) {
+  console.log("get index")
+  return res.send("Hi There to Azure Server!")
+
+})
+
 router.post('/validate', function (req, res) {
 
   var fileName = Guid.raw(),
