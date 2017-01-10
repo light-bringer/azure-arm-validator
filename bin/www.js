@@ -42,11 +42,13 @@ function normalizePort(val) {
 
   if (isNaN(port)) {
     // named pipe
+    console.log(val)
     return val;
   }
 
   if (port >= 0) {
     // port number
+    console.log(port)
     return port;
   }
 
@@ -91,4 +93,7 @@ function onListening() {
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
+  console.log('Hi there at -  ' + bind)
+  console.log(addr, bind)
+
 }
