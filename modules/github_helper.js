@@ -2,7 +2,7 @@ var unirest = require('unirest');
 var path = require('path');
 var conf = require('./config');
 var RSVP = require('rsvp');
-var console.log = require('console.log')('arm-validator:github');
+var debug = require('debug')('arm-validator:github');
 
 exports.getPullRequestBaseLink = function (prNumber) {
 
