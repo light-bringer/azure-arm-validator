@@ -1,7 +1,7 @@
 var scripty = require('azure-scripty'),
   conf = require('./config'),
   RSVP = require('rsvp'),
-  debug = require('debug')('arm-validator:azure'),
+  console.log = require('console.log')('arm-validator:azure'),
   mongoHelper = require('./mongo_helper');
 
 var invoke = RSVP.denodeify(scripty.invoke);
@@ -27,15 +27,15 @@ exports.validateTemplate = function (templateFile, parametersFile) {
     'template-file': templateFile,
     'parameters-file': parametersFile
   };
-  debug('DEBUG: using template file:');
-  debug(templateFile);
-  debug('using paramters:');
-  debug(parametersFile);
+  console.log('console.log: using template file:');
+  console.log(templateFile);
+  console.log('using paramters:');
+  console.log(parametersFile);
   return invoke.call(scripty, cmd);
 };
 
 function createGroup(groupName) {
-  debug('creating resource group: ' + groupName + ' in region ' + conf.get('AZURE_REGION'));
+  console.log('creating resource group: ' + groupName + ' in region ' + conf.get('AZURE_REGION'));
   var cmd = {
     command: 'group create',
     positional: [groupName, conf.get('AZURE_REGION')]
@@ -70,7 +70,7 @@ exports.deleteGroup = function (groupName) {
   // first, remove tracking entry in db
   return mongoHelper.connect()
     .then(db => {
-      debug('deleting resource group: ' + groupName);
+      console.log('deleting resource group: ' + groupName);
       var resourceGroups = db.collection('resourceGroups');
       var deleteOne = RSVP.denodeify(resourceGroups.deleteOne);
       return deleteOne.call(resourceGroups, {
@@ -78,15 +78,15 @@ exports.deleteGroup = function (groupName) {
       });
     })
     .then(() => invoke.call(scripty, cmd))
-    .then(() => debug('sucessfully deleted resource group: ' + groupName));
+    .then(() => console.log('sucessfully deleted resource group: ' + groupName));
 };
 
 exports.testTemplate = function (templateFile, parametersFile, rgName) {
-  debug('DEBUG: using template file:');
-  debug(templateFile);
-  debug('using paramters:');
-  debug(parametersFile);
-  debug('Deploying to RG: ' + rgName);
+  console.log('console.log: using template file:');
+  console.log(templateFile);
+  console.log('using paramters:');
+  console.log(parametersFile);
+  console.log('Deploying to RG: ' + rgName);
 
   return mongoHelper.connect()
     .then(db => {
@@ -98,11 +98,11 @@ exports.testTemplate = function (templateFile, parametersFile, rgName) {
       });
     })
     .then(result => {
-      debug('sucessfully inserted ' + result.ops.length + ' resource group to collection');
+      console.log('sucessfully inserted ' + result.ops.length + ' resource group to collection');
       return createGroup(rgName);
     })
     .then(() => {
-      debug('sucessfully created resource group ' + rgName);
+      console.log('sucessfully created resource group ' + rgName);
 
       var cmd = {
         command: 'group deployment create',
