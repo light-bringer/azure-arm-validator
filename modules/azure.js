@@ -1,7 +1,7 @@
 var scripty = require('azure-scripty'),
   conf = require('./config'),
   RSVP = require('rsvp'),
-  console.log = require('console.log')('arm-validator:azure'),
+  debug = require('debug')('arm-validator:azure'),
   mongoHelper = require('./mongo_helper');
 
 var invoke = RSVP.denodeify(scripty.invoke);
