@@ -4,10 +4,11 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "test" : "grunt test"
+    "test": "grunt test"
   },
   "description": "A tiny server which will validate Azure Resource Templates",
   "dependencies": {
+    "azure": "^1.2.0-preview",
     "azure-arm-resource": "^0.10.6",
     "azure-cli": "^0.10.1",
     "azure-common": "^0.9.16",

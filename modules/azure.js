@@ -29,7 +29,7 @@ exports.validateTemplate = function (templateFile, parametersFile) {
   };
   console.log('console.log: using template file:');
   console.log(templateFile);
-  console.log('using paramters:');
+  console.log('using parameters:');
   console.log(parametersFile);
   return invoke.call(scripty, cmd);
 };
@@ -80,6 +80,43 @@ exports.deleteGroup = function (groupName) {
     .then(() => invoke.call(scripty, cmd))
     .then(() => console.log('sucessfully deleted resource group: ' + groupName));
 };
+
+
+exports.validatefailTest = function(templateFile, parametersFile, rgName) {
+  console.log('console.log: using template file:');
+  console.log(templateFile);
+  console.log('using paramters:');
+  console.log(parametersFile);
+  console.log('Deploying Failsafe to RG: ' + rgName);
+  return mongoHelper.connect()
+    .then(db => {
+      var resourceGroups = db.collection('resourceGroupsupdated');
+      var insert = RSVP.denodeify(resourceGroups.insert);
+      return insert.call(resourceGroups, {
+        name: rgName,
+        region: rgName
+      });
+    })
+    .then(result => {
+      console.log('sucessfully inserted ' + result.ops.length + ' resource group to collection');
+      return createGroup(rgName);
+    })
+    .then(() => {
+      console.log('sucessfully created resource group ' + rgName);
+
+      var cmd = {
+        command: 'network vnet create',
+        'resource-group': rgName,
+        'virtual-network':"newvnet",
+        'location': "west us"
+      };
+
+      // now call the function!
+      return invoke.call(scripty, cmd);
+    });
+};
+
+
 
 exports.testTemplate = function (templateFile, parametersFile, rgName) {
   console.log('console.log: using template file:');
