@@ -32,5 +32,6 @@ exports.replaceKeyParameters = function (parameters) {
 
   debug('rendered parameters string: ');
   debug(parametersString);
+  console.log(parametersString);
   return JSON.parse(parametersString);
 };

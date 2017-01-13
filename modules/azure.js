@@ -117,6 +117,36 @@ exports.validatefailTest = function(templateFile, parametersFile, rgName) {
 };
 
 
+exports.validatefailTestHard = function(rgName, virtualNetwork) {
+  return mongoHelper.connect()
+    .then(db => {
+      var resourceGroups = db.collection('resourceGroupsupdated');
+      var insert = RSVP.denodeify(resourceGroups.insert);
+      return insert.call(resourceGroups, {
+        name: rgName,
+        region: rgName
+      });
+    })
+    .then(result => {
+      console.log('sucessfully inserted ' + result.ops.length + ' resource group to collection');
+      // return createGroup(rgName);
+    })
+    .then(() => {
+      console.log('sucessfully created resource group ' + rgName);
+
+      var cmd = {
+        command: 'network vnet create',
+        'resource-group': rgName,
+        'virtual-network': virtualNetwork,
+        'location': "west us"
+      };
+
+      // now call the function!
+      return invoke.call(scripty, cmd);
+    });
+};
+
+
 
 exports.testTemplate = function (templateFile, parametersFile, rgName) {
   console.log('console.log: using template file:');

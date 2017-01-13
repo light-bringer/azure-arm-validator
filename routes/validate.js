@@ -29,13 +29,15 @@ function writeFileHelper(fs, fileName, parametersFileName, template, parameters)
 // replaces https://raw.githubusercontent.com links to upstream:master to the downstream repo
 function replaceRawLinksForPR(template, prNumber) {
   var templateString = JSON.stringify(template);
+  console.log("parameters + " + templateString)
   // we make the assumption all links target a source on master
   var replaceTarget = 'https://' + path.join('raw.githubusercontent.com/', conf.get('GITHUB_REPO'), '/master');
-  debug('replaceTarget: ' + replaceTarget);
+  console.log('replaceTarget: ' + replaceTarget);
   return githubHelper.getPullRequestBaseLink(prNumber)
     .then(link => {
       // replace something like 'https://raw.githubusercontent.com/azure/azure-quickstart-templates/master'
       // with 'https://raw.githubusercontent.com/user/azure-quickstart-templates/sourcebranch'
+      console.log("returning : " + templateString.replace(new RegExp(replaceTarget, 'g'), link))
       return JSON.parse(templateString.replace(new RegExp(replaceTarget, 'g'), link));
     });
 }
@@ -43,6 +45,8 @@ function replaceRawLinksForPR(template, prNumber) {
 
 // replaces
 function replaceSpecialParameterPlaceholders(req) {
+  console.log(req.body.parameters)
+  console.log("replaceKey : " + paramHelper.replaceKeyParameters(req.body.parameters) )
   req.body.parameters = paramHelper.replaceKeyParameters(req.body.parameters);
 }
 
@@ -130,8 +134,8 @@ router.post('/deploy', function (req, res) {
         return replaceRawLinksForPR(req.body.template, req.body.pull_request);
       })
       .then((modifiedTemplate) => {
-        debug('modified template is:');
-        debug(modifiedTemplate);
+        console.log('modified template is:');
+        console.log(modifiedTemplate);
         req.body.template = modifiedTemplate;
       });
   }
