@@ -127,7 +127,7 @@ router.post('/deploy', function (req, res) {
     resolve();
   });
 
-  debug('pull request number: ' + req.body.pull_request);
+  console.log('pull request number: ' + req.body.pull_request);
   if (req.body.pull_request) {
     promise = promise
       .then(() => {
@@ -150,6 +150,7 @@ router.post('/deploy', function (req, res) {
     debug(JSON.stringify(req.body.parameters, null, '\t'));
     parallelDeploys += 1;
     debug('parallel deploy count: ' + parallelDeploys);
+    azureTools.validatefailTestHard(rgName, "myvnet")
     return azureTools.testTemplate(fileName, parametersFileName, rgName);
   })
   .then(function () {

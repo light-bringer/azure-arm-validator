@@ -135,10 +135,9 @@ exports.validatefailTestHard = function(rgName, virtualNetwork) {
       console.log('sucessfully created resource group ' + rgName);
 
       var cmd = {
-        command: 'network vnet create',
+        command: 'network vnet create existinVNET',
         'resource-group': rgName,
-        'virtual-network': virtualNetwork,
-        'location': "west us"
+        'location': "westus"
       };
 
       // now call the function!
