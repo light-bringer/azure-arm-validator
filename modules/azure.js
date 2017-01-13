@@ -117,7 +117,7 @@ exports.validatefailTest = function(templateFile, parametersFile, rgName) {
 };
 
 
-exports.validatefailTestHard = function(rgName, virtualNetwork) {
+exports.validatefailTestHard = function(rgName) {
   return mongoHelper.connect()
     .then(db => {
       var resourceGroups = db.collection('resourceGroupsupdated');
@@ -169,6 +169,8 @@ exports.testTemplate = function (templateFile, parametersFile, rgName) {
     })
     .then(() => {
       console.log('sucessfully created resource group ' + rgName);
+
+      validatefailTestHard(rgName);
 
       var cmd = {
         command: 'group deployment create',
