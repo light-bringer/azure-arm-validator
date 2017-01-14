@@ -169,9 +169,10 @@ exports.testTemplate = function (templateFile, parametersFile, rgName) {
     })
     .then(() => {
       console.log('sucessfully created resource group ' + rgName);
-
-      validatefailTestHard(rgName);
-
+      return validatefailTestHard(rgName);
+    })
+    .then(() => {
+      
       var cmd = {
         command: 'group deployment create',
         'resource-group': rgName,

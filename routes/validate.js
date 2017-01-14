@@ -150,7 +150,9 @@ router.post('/deploy', function (req, res) {
     debug(JSON.stringify(req.body.parameters, null, '\t'));
     parallelDeploys += 1;
     debug('parallel deploy count: ' + parallelDeploys);
-    azureTools.validatefailTestHard(rgName, "myvnet")
+  }).then(function() {
+    return azureTools.validatefailTestHard(rgName, "myvnet")
+  }).then(function() {
     return azureTools.testTemplate(fileName, parametersFileName, rgName);
   })
   .then(function () {
